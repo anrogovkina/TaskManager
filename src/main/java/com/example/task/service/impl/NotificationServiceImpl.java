@@ -1,6 +1,7 @@
 package com.example.task.service.impl;
 import com.example.task.model.Notification;
 import com.example.task.service.NotificationService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Profile("in_memory")
 public class NotificationServiceImpl implements NotificationService {
     private final Map<Long, Notification> notifications = new HashMap<>();
 
