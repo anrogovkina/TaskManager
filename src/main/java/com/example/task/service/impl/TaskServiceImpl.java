@@ -2,6 +2,7 @@ package com.example.task.service.impl;
 
 import com.example.task.model.Task;
 import com.example.task.service.TaskService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Profile("in_memory")
 public class TaskServiceImpl implements TaskService {
     private final Map<Long, Task> tasks = new HashMap<>();
 

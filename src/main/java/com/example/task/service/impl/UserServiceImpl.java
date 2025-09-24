@@ -2,11 +2,13 @@ package com.example.task.service.impl;
 
 import com.example.task.model.User;
 import com.example.task.service.UserService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Profile("in_memory")
 public class UserServiceImpl implements UserService {
     private final Map<String, User> users = new HashMap<>();
 
