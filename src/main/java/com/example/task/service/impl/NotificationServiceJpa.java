@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("h2")
+@Profile({"h2","postgres"})
 public class NotificationServiceJpa implements NotificationService {
     private final NotificationRepository notificationRepository;
 
