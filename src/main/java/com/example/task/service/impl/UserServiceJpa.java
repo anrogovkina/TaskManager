@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("h2")
+@Profile({"h2","postgres"})
 public class UserServiceJpa implements UserService {
     private final UserRepository userRepository;
     public UserServiceJpa(UserRepository userRepository) {
