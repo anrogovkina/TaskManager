@@ -21,7 +21,8 @@ public class NotificationServiceJpa implements NotificationService {
     @Override
     @CacheEvict(value = { "notifications", "pendingNotifications" }, key = "#notification.userId")
     public Notification createNotification(Notification notification) {
-        return notificationRepository.save(notification);
+        throw new UnsupportedOperationException
+                ("Notifications are created via message broker only!");
     }
 
     @Override

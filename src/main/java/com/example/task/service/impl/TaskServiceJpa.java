@@ -1,8 +1,10 @@
 package com.example.task.service.impl;
 
+import com.example.task.config.RabbitConfig;
 import com.example.task.model.Task;
 import com.example.task.repository.TaskRepository;
 import com.example.task.service.TaskService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
@@ -15,15 +17,23 @@ import java.util.List;
 public class TaskServiceJpa implements TaskService {
 
     private final TaskRepository taskRepository;
-
-    public TaskServiceJpa(TaskRepository taskRepository) {
+    private final RabbitTemplate rabbitTemplate;
+    public TaskServiceJpa(TaskRepository taskRepository, RabbitTemplate rabbitTemplate) {
         this.taskRepository = taskRepository;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
     @CacheEvict(value = { "tasks", "pendingTasks" }, key = "#task.userId")
     public Task createTask(Task task) {
-        return taskRepository.save(task);
+        Task created = taskRepository.save(task);
+
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.TASK_EXCHANGE,
+                RabbitConfig.TASK_ROUTING_KEY,
+                created
+        );
+        return created;
     }
 
     @Override
