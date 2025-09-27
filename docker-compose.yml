@@ -9,12 +9,22 @@ services:
       POSTGRES_DB: task_manager
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+    container_name: dragonfly_cache
+    restart: always
+    ports:
+      - "6379:6379"
 
   app:
     build: .
     container_name: task_app
     depends_on:
       - postgres
+      - dragonfly
     environment:
       SPRING_PROFILES_ACTIVE: postgres
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/task_manager
@@ -22,3 +32,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8081:8081"
+
+volumes:
+  pgdata:
